@@ -73,6 +73,21 @@ h1 {
   z-index: 2;
 }
 
+.container::after {
+  content: "";
+  position: absolute;
+  bottom: -40px;
+  left: -60px;
+  width: 240px;
+  height: 140px;
+  background: linear-gradient(
+    315deg,
+    rgba(37, 99, 235, 0.45),
+    transparent
+  );
+  transform: rotate(-8deg);
+  z-index: 1;
+}
 
 
 
@@ -278,6 +293,7 @@ switchLanguage(urlLang || savedLang || "ja");
 
 </body>
 </html>
+
 
 
 
