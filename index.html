@@ -43,26 +43,36 @@ h1 {
 
 
 .container {
-  background: #111827;
-  color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+  background: #0f172a;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.55);
   position: relative;
   overflow: hidden;
 }
 
-/* 赤い斜めアクセント */
+/* 赤い斜めアクセント（修正版） */
 .container::before {
   content: "";
   position: absolute;
-  top: -40px;
-  right: -60px;
-  width: 200px;
-  height: 120px;
-  background: linear-gradient(135deg, #c1121f, transparent);
-  opacity: 0.35;
-  transform: rotate(15deg);
+  top: -30px;
+  right: -40px;
+  width: 260px;
+  height: 140px;
+  background: linear-gradient(
+    135deg,
+    rgba(193, 18, 31, 0.75),
+    rgba(193, 18, 31, 0)
+  );
+  transform: rotate(12deg);
+  z-index: 1;
 }
+
+/* 中身を前面に出す */
+.container > * {
+  position: relative;
+  z-index: 2;
+}
+
 
 
 
@@ -268,6 +278,7 @@ switchLanguage(urlLang || savedLang || "ja");
 
 </body>
 </html>
+
 
 
 
