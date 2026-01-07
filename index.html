@@ -1,0 +1,233 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>メジャスピ 経験値計算</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      margin: 0;
+      padding: 16px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 22px;
+    }
+
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #4f8cff;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #calcBtn {
+      background-color: #4f8cff;
+      color: white;
+    }
+
+    #resetBtn {
+      background-color: #ccc;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .lang-buttons {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .lang-buttons button {
+      margin: 0 5px;
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 480px) {
+      .buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<h1 id="title"></h1>
+
+<div class="container">
+
+  <label id="currentLvLabel"></label>
+  <input type="number" id="currentLv" min="1" max="75" onkeydown="handleEnter(event)">
+
+  <label id="targetLvLabel"></label>
+  <input type="number" id="targetLv" min="1" max="75"
+         onfocus="adjustTargetLevel()" onkeydown="handleEnter(event)">
+
+  <div class="buttons">
+    <button id="calcBtn" onclick="calculate()"></button>
+    <button id="resetBtn" onclick="resetAll()"></button>
+  </div>
+
+  <p id="result"></p>
+
+  <div class="lang-buttons">
+    <button onclick="switchLanguage('ja')">日本語</button>
+    <button onclick="switchLanguage('en')">English</button>
+  </div>
+
+</div>
+
+<script>
+let currentLang = "ja";
+
+const texts = {
+  ja: {
+    title: "メジャスピ 経験値計算",
+    currentLv: "現在レベル",
+    targetLv: "目標レベル",
+    calculate: "計算",
+    reset: "リセット",
+    result: "必要経験値"
+  },
+  en: {
+    title: "MLB PRO SPIRIT EXP Calculator",
+    currentLv: "Current Level",
+    targetLv: "Target Level",
+    calculate: "Calculate",
+    reset: "Reset",
+    result: "Required EXP"
+  }
+};
+
+const totalExpTable = {
+  1:0,2:20,3:46,4:78,5:116,6:161,7:214,8:274,9:342,10:419,
+  11:505,12:600,13:705,14:820,15:946,16:1083,17:1232,18:1393,
+  19:1568,20:1756,21:1959,22:2177,23:2411,24:2662,25:2930,
+  26:3217,27:3523,28:3849,29:4197,30:4567,31:4960,32:5378,
+  33:5822,34:6293,35:6793,36:7323,37:7884,38:8479,39:9108,
+  40:9774,41:10478,42:11222,43:12009,44:12840,45:13171,
+  46:14643,47:15621,48:16653,49:17741,50:18889,51:20099,
+  52:21375,53:22719,54:24136,55:25628,56:27200,57:28856,
+  58:30600,59:32436,60:34369,61:36403,62:38544,63:40797,
+  64:43168,65:45662,66:48286,67:51046,68:53949,69:57003,
+  70:60214,71:63591,72:67142,73:70875,74:74800,75:78926
+};
+
+function calculate() {
+  const current = Number(currentLv.value);
+  const target = Number(targetLv.value);
+
+  if (
+    totalExpTable[current] === undefined ||
+    totalExpTable[target] === undefined ||
+    current >= target
+  ) {
+    result.textContent =
+      currentLang === "ja"
+        ? "正しいレベルを入力してください（1〜75）"
+        : "Please enter valid levels (1–75)";
+    return;
+  }
+
+  const total = totalExpTable[target] - totalExpTable[current];
+  result.textContent =
+    `${texts[currentLang].result}：${total.toLocaleString()}`;
+}
+
+
+function adjustTargetLevel() {
+  const current = Number(currentLv.value);
+  if (!current || current >= 75) return;
+
+  const next = current + 1;
+  targetLv.min = next;
+  if (!targetLv.value || Number(targetLv.value) < next) {
+    targetLv.value = next;
+  }
+}
+
+function resetAll() {
+  currentLv.value = "";
+  targetLv.value = "";
+  targetLv.min = 1;
+  result.textContent = "";
+}
+
+function handleEnter(e) {
+  if (e.key === "Enter") calculate();
+}
+
+function switchLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem("lang", lang);
+
+  const url = new URL(location);
+  url.searchParams.set("lang", lang);
+  history.replaceState({}, "", url);
+
+  title.textContent = texts[lang].title;
+  currentLvLabel.textContent = texts[lang].currentLv + "：";
+  targetLvLabel.textContent = texts[lang].targetLv + "：";
+  calcBtn.textContent = texts[lang].calculate;
+  resetBtn.textContent = texts[lang].reset;
+  result.textContent = "";
+}
+
+const urlLang = new URLSearchParams(location.search).get("lang");
+const savedLang = localStorage.getItem("lang");
+switchLanguage(urlLang || savedLang || "ja");
+</script>
+
+</body>
+</html>
+
