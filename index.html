@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="google-site-verification" content="20C5va_c4sBPcNUj5zcWNPRNFr034TBpplPYpTe7oiE" />
-  <title>【メジャスピ】経験値計算ツール｜レベル1〜75対応</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="20C5va_c4sBPcNUj5zcWNPRNFr034TBpplPYpTe7oiE" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <meta name="description" content="メジャスピ（MLB PRO SPIRIT）の経験値計算ツール。現在レベルから目標レベルまでに必要な経験値を簡単に計算できます。無課金・初心者向け。スマホ・日本語/英語対応。">
 
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont,
+<title>メジャスピ 経験値計算ツール</title>
+
+ <meta name="description" content="メジャスピ（MLB PRO SPIRIT）の経験値計算ツール。現在レベルから目標レベルまでに必要な経験値を簡単に計算できます。無課金・初心者向け。スマホ・日本語/英語対応。">
+
+<style>
+body{
+     font-family: system-ui, -apple-system, BlinkMacSystemFont,
         "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
       background:
-        linear-gradient(135deg,
-          rgba(255,255,255,0.04) 25%,
-          rgba(255,255,255,0) 25%,
-          rgba(255,255,255,0) 50%,
-          rgba(255,255,255,0.04) 50%,
-          rgba(255,255,255,0.04) 75%,
-          rgba(255,255,255,0) 75%),
-        linear-gradient(135deg, #0b1c3d, #142a5c);
+  linear-gradient(135deg,
+    rgba(255,255,255,0.025) 25%,
+    rgba(255,255,255,0) 25%,
+    rgba(255,255,255,0) 50%,
+    rgba(255,255,255,0.025) 50%,
+    rgba(255,255,255,0.025) 75%,
+    rgba(255,255,255,0) 75%),
+  linear-gradient(135deg, #0b1c3d, #142a5c);
+
       background-size: 120px 120px, cover;
       color: #fff;
       margin: 0;
@@ -62,6 +65,17 @@
       margin-bottom: 16px;
     }
 
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #1f2937;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
     .buttons {
       display: flex;
       gap: 10px;
@@ -91,15 +105,24 @@
       margin-top: 24px;
     }
 
-    .seo-text {
-      max-width: 800px;
-      margin: 60px auto 40px;
-      font-size: 14px;
-      color: #cbd5f5;
-      line-height: 1.8;
-      opacity: 0.9;
-    }
-  </style>
+.lang-buttons button {
+  padding: 10px 16px;
+  font-size: 15px;
+}
+
+
+.seo-text{
+  max-width:420px;
+  margin:40px auto;
+  font-size:14px;
+  color:#cbd5f5;
+  line-height:1.8;
+}
+
+    
+.grade2{color:#cd7f32;font-weight:bold;}
+.grade3{color:#cfd8dc;font-weight:bold;}
+</style>
 </head>
 
 <body>
@@ -107,24 +130,6 @@
 <h1 id="title"></h1>
 
 <div class="container">
-  <label id="currentLvLabel"></label>
-  <input type="number" id="currentLv" min="1" max="75" onkeydown="handleEnter(event)">
-
-  <label id="targetLvLabel"></label>
-  <input type="number" id="targetLv" min="1" max="75" onfocus="adjustTargetLevel()" onkeydown="handleEnter(event)">
-
-  <div class="buttons">
-    <button id="calcBtn" onclick="calculate()"></button>
-    <button id="resetBtn" onclick="resetAll()"></button>
-  </div>
-
-  <p id="result"></p>
-
-  <div class="lang-buttons">
-    <button onclick="switchLanguage('ja')">日本語</button>
-    <button onclick="switchLanguage('en')">English</button>
-  </div>
-</div>
 
 <section class="seo-text">
   <h2 id="seoTitle"></h2>
@@ -132,113 +137,171 @@
   <p id="seoText2"></p>
 </section>
 
-<script>
-let currentLang = "ja";
 
-const texts = {
-  ja: {
-    title: "メジャスピ 経験値計算",
-    currentLv: "現在レベル",
-    targetLv: "目標レベル",
-    calculate: "計算",
-    reset: "リセット",
-    result: "必要経験値",
-    seoTitle: "メジャスピ経験値計算ツールについて",
-    seoText1:  "このページは、メジャスピ（MLB PRO SPIRIT）のゲーム内機能である「レベルアップ」を行う際に、必要となる経験値がどれくらいかを簡単に確認できる無料の計算ツールです。",
-    seoText2:　"現在のレベルと目標レベルを入力するだけで、必要な経験値をすぐに把握できます。"
-  },
-  en: {
-    title: "MLB PRO SPIRIT EXP Calculator",
-    currentLv: "Current Level",
-    targetLv: "Target Level",
-    calculate: "Calculate",
-    reset: "Reset",
-    result: "Required EXP",
-    seoTitle: "About the MLB PRO SPIRIT EXP Calculator",
-    seoText1: "This page provides a free calculation tool for MLB PRO SPIRIT that allows you to easily check how much experience points (EXP) are required when using the in-game “Level Up” feature.",
-    seoText2: "Simply enter your current level and target level to instantly see the required EXP."
-  }
-};
+<label id="currentLvLabel"></label>
+<input type="number" id="currentLv" min="1" max="75" onkeydown="handleEnter(event)">
+
+<label id="targetLvLabel"></label>
+<input type="number" id="targetLv" min="1" max="75" onkeydown="handleEnter(event)">
+
+<label id="modeLabel"></label>
+
+<select id="mode">
+  <option value="2"></option>
+  <option value="3"></option>
+  <option value="mix"></option>
+</select>
+
+<div class="buttons">
+  <button id="calcBtn" onclick="calculate()"></button>
+  <button id="resetBtn" onclick="resetAll()"></button>
+</div>
+
+<p id="result"></p>
+
+<div class="lang-buttons">
+  <button onclick="switchLanguage('ja')">日本語</button>
+  <button onclick="switchLanguage('en')">English</button>
+</div>
+
+</div>
+
+<script>
+const mode = document.getElementById("mode");
+
+const EXP_G2 = 2933;
+const EXP_G3 = 7173;
 
 const totalExpTable = {
-  1:0,2:20,3:46,4:78,5:116,6:161,7:214,8:274,9:342,10:419,
-  11:505,12:600,13:705,14:820,15:946,16:1083,17:1232,18:1393,
-  19:1568,20:1756,21:1959,22:2177,23:2411,24:2662,25:2930,
-  26:3217,27:3523,28:3849,29:4197,30:4567,31:4960,32:5378,
-  33:5822,34:6293,35:6793,36:7323,37:7884,38:8479,39:9108,
-  40:9774,41:10478,42:11222,43:12009,44:12840,45:13171,
-  46:14643,47:15621,48:16653,49:17741,50:18889,51:20099,
-  52:21375,53:22719,54:24136,55:25628,56:27200,57:28856,
-  58:30600,59:32436,60:34369,61:36403,62:38544,63:40797,
-  64:43168,65:45662,66:48286,67:51046,68:53949,69:57003,
-  70:60214,71:63591,72:67142,73:70875,74:74800,75:78926
+1:0,2:20,3:46,4:78,5:116,6:161,7:214,8:274,9:342,10:419,
+11:505,12:600,13:705,14:820,15:946,16:1083,17:1232,18:1393,
+19:1568,20:1756,21:1959,22:2177,23:2411,24:2662,25:2930,
+26:3217,27:3523,28:3849,29:4197,30:4567,31:4960,32:5378,
+33:5822,34:6293,35:6793,36:7323,37:7884,38:8479,39:9108,
+40:9774,41:10478,42:11222,43:12009,44:12840,45:13171,
+46:14643,47:15621,48:16653,49:17741,50:18889,51:20099,
+52:21375,53:22719,54:24136,55:25628,56:27200,57:28856,
+58:30600,59:32436,60:34369,61:36403,62:38544,63:40797,
+64:43168,65:45662,66:48286,67:51046,68:53949,69:57003,
+70:60214,71:63591,72:67142,73:70875,74:74800,75:78926
 };
 
-function calculate() {
-  const current = Number(currentLv.value);
-  const target = Number(targetLv.value);
 
-  if (!totalExpTable[current] && current !== 1 ||
-      !totalExpTable[target] ||
-      current >= target) {
-    result.textContent =
-      currentLang === "ja"
-        ? "正しいレベルを入力してください（1〜75）"
-        : "Please enter valid levels (1–75)";
-    return;
+const texts = {
+ja:{
+ title:"メジャスピ 経験値計算",
+ currentLv:"現在レベル",
+ targetLv:"目標レベル",
+ mode:"放出",
+ calc:"計算",
+ reset:"リセット",
+ result:"必要経験値",
+ g2:"グレードⅡ必要数",
+ g3:"グレードⅢ必要数",
+ remain:"余りEXP",
+ mode2:"グレードⅡのみ",
+ mode3:"グレードⅢのみ",
+ modemix:"グレードⅡ＋Ⅲ ",
+ seoTitle: "メジャスピ経験値計算ツールについて",
+ seoText1:"このページは、メジャスピ（MLB PRO SPIRIT）のゲーム内機能である「レベルアップ」を行う際に、必要となる経験値がどれくらいかを簡単に確認できる無料の計算ツールです。",
+ seoText2:"現在のレベルと目標レベルを入力するだけで、必要な経験値をすぐに把握できます。"
+},
+en:{
+ title:"MLB PRO SPIRIT EXP Calculator",
+ currentLv:"Current Level",
+ targetLv:"Target Level",
+ mode:"Release",
+ calc:"Calculate",
+ reset:"Reset",
+ result:"Required EXP",
+ g2:"Grade II Needed",
+ g3:"Grade III Needed",
+ remain:"Remaining EXP",
+ mode2:"Grade II Only",
+ mode3:"Grade III Only",
+ modemix:"Grade II + III",
+ seoTitle:"About the MLB PRO SPIRIT EXP Calculator",
+ seoText1:"This page provides a free calculation tool for MLB PRO SPIRIT that allows you to easily check how much experience points (EXP) are required when using the in-game “Level Up” feature.",
+ seoText2:"Simply enter your current level and target level to instantly see the required EXP."}
+};
+
+let currentLang="ja";
+
+function handleEnter(e){
+  if(e.key === "Enter"){
+    calculate();
   }
-
-  const total = totalExpTable[target] - totalExpTable[current];
-  result.textContent =
-    `${texts[currentLang].result}：${total.toLocaleString()}`;
 }
 
-function adjustTargetLevel() {
-  const current = Number(currentLv.value);
-  if (!current || current >= 75) return;
 
-  const next = current + 1;
-  targetLv.min = next;
-  if (!targetLv.value || Number(targetLv.value) < next) {
-    targetLv.value = next;
-  }
+function calculate(){
+ const c=Number(currentLv.value);
+ const t=Number(targetLv.value);
+
+ if(totalExpTable[c]===undefined || totalExpTable[t]===undefined || c>=t){
+  result.textContent = currentLang==="ja"
+    ? "正しいレベルを入力してください"
+    : "Please enter valid levels";
+  return;
+ }
+
+ const need = totalExpTable[t]-totalExpTable[c];
+ let html = `${texts[currentLang].result}: ${need.toLocaleString()}<br>`;
+
+ if(mode.value==="2"){
+  const n=Math.ceil(need/EXP_G2);
+  html+=`${texts[currentLang].g2}: <span class="grade2">${n}</span><br>
+         ${texts[currentLang].remain}: ${(n*EXP_G2-need).toLocaleString()}`;
+ }
+ else if(mode.value==="3"){
+  const n=Math.ceil(need/EXP_G3);
+  html+=`${texts[currentLang].g3}: <span class="grade3">${n}</span><br>
+         ${texts[currentLang].remain}: ${(n*EXP_G3-need).toLocaleString()}`;
+ }
+ else{
+  const g3=Math.floor(need/EXP_G3);
+  const g2=Math.ceil((need-g3*EXP_G3)/EXP_G2);
+  html+=`<span class="grade3">GⅢ: ${g3}</span>,
+         <span class="grade2">GⅡ: ${g2}</span><br>
+         ${texts[currentLang].remain}: ${(g3*EXP_G3+g2*EXP_G2-need).toLocaleString()}`;
+ }
+
+ result.innerHTML=html;
 }
 
-function resetAll() {
+function resetAll(){
   currentLv.value = "";
   targetLv.value = "";
-  targetLv.min = 1;
-  result.textContent = "";
+  mode.selectedIndex = 0; // 放出を先頭に戻す
+  result.innerHTML = ""; // innerHTMLで完全リセット
+  currentLv.focus();
 }
 
-function handleEnter(e) {
-  if (e.key === "Enter") calculate();
+function switchLanguage(lang){
+ currentLang=lang;
+ document.documentElement.lang=lang;
+
+ title.textContent=texts[lang].title;
+ currentLvLabel.textContent=texts[lang].currentLv;
+ targetLvLabel.textContent=texts[lang].targetLv;
+ modeLabel.textContent=texts[lang].mode;
+ calcBtn.textContent=texts[lang].calc;
+ resetBtn.textContent=texts[lang].reset;
+
+ mode.options[0].textContent=texts[lang].mode2;
+ mode.options[1].textContent=texts[lang].mode3;
+ mode.options[2].textContent=texts[lang].modemix;
+
+  document.getElementById("seoTitle").textContent = texts[lang].seoTitle;
+  document.getElementById("seoText1").textContent = texts[lang].seoText1;
+  document.getElementById("seoText2").textContent = texts[lang].seoText2;
 }
 
-function switchLanguage(lang) {
-  currentLang = lang;
-  localStorage.setItem("lang", lang);
-
-  title.textContent = texts[lang].title;
-  currentLvLabel.textContent = texts[lang].currentLv;
-  targetLvLabel.textContent = texts[lang].targetLv;
-  calcBtn.textContent = texts[lang].calculate;
-  resetBtn.textContent = texts[lang].reset;
-
-  seoTitle.textContent = texts[lang].seoTitle;
-  seoText1.textContent = texts[lang].seoText1;
-  seoText2.textContent = texts[lang].seoText2;
-
-  result.textContent = "";
-}
-
-switchLanguage(new URLSearchParams(location.search).get("lang") || "ja");
+switchLanguage("ja");
 </script>
 
 </body>
 </html>
-
-
 
 
 
