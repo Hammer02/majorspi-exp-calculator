@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -9,6 +11,16 @@
 <title>メジャスピ 経験値計算ツール</title>
 
  <meta name="description" content="メジャスピ（MLB PRO SPIRIT）の経験値計算ツール。現在レベルから目標レベルまでに必要な経験値を簡単に計算できます。無課金・初心者向け。スマホ・日本語/英語対応。">
+
+  <p>
+    ゲームの詳細や最新情報については、
+    <a href="https://www.konami.com/games/mps/jp/ja/?utm_source=kdemobile&utm_medium=referral&utm_content=uppericon&utm_campaign=kdetop"
+       target="_blank"
+       rel="noopener">
+      メジャスピ公式サイト
+    </a>
+    をご確認ください。
+  </p>
 
 <style>
 body{
@@ -186,45 +198,44 @@ const totalExpTable = {
 70:60214,71:63591,72:67142,73:70875,74:74800,75:78926
 };
 
-const texts = {
-  ja:{
-    title:"メジャスピ 経験値計算",
-    currentLv:"現在レベル",
-    targetLv:"目標レベル",
-    mode:"放出",
-    calc:"計算",
-    reset:"リセット",
-    result:"必要経験値",
-    g2:"グレードⅡ必要数",
-    g3:"グレードⅢ必要数",
-    remain:"余りEXP",
-    mode2:"グレードⅡのみ",
-    mode3:"グレードⅢのみ",
-    modemix:"グレードⅡ＋Ⅲ",
-    seoTitle:"メジャスピ経験値計算ツールについて",
-    seoText1:"このページは、メジャスピ（MLB PRO SPIRIT）のゲーム内機能である「レベルアップ」を行う際に、必要となる経験値を簡単に確認できる無料の計算ツールです。",
-    seoText2:"現在のレベルと目標レベルを入力するだけで、必要な経験値をすぐに把握できます。なお「放出」のグレードⅡ、グレードⅢにおいてはレベル最大の場合に得られる経験値に換算して計算しています。"
-  },
-  en:{
-    title:"MLB PRO SPIRIT EXP Calculator",
-    currentLv:"Current Level",
-    targetLv:"Target Level",
-    mode:"Release",
-    calc:"Calculate",
-    reset:"Reset",
-    result:"Required EXP",
-    g2:"Grade II Needed",
-    g3:"Grade III Needed",
-    remain:"Remaining EXP",
-    mode2:"Grade II Only",
-    mode3:"Grade III Only",
-    modemix:"Grade II + III",
-    seoTitle:"About the MLB PRO SPIRIT EXP Calculator",
-    seoText1:"This page provides a free calculation tool for MLB PRO SPIRIT that allows you to easily check how much experience points (EXP) are required when using the in-game Level Up feature.",
-    seoText2:"Simply enter your current level and target level to instantly see the required EXP.For Grade II and Grade III releases, the calculation is based on the amount of experience points obtained when they are at maximum level."
-  }
-};
 
+const texts = {
+ja:{
+ title:"メジャスピ 経験値計算",
+ currentLv:"現在レベル",
+ targetLv:"目標レベル",
+ mode:"放出",
+ calc:"計算",
+ reset:"リセット",
+ result:"必要経験値",
+ g2:"グレードⅡ必要数",
+ g3:"グレードⅢ必要数",
+ remain:"余りEXP",
+ mode2:"グレードⅡのみ",
+ mode3:"グレードⅢのみ",
+ modemix:"グレードⅡ＋Ⅲ ",
+ seoTitle: "メジャスピ経験値計算ツールについて",
+ seoText1:"このページは、メジャスピ（MLB PRO SPIRIT）のゲーム内機能である「レベルアップ」を行う際に、必要となる経験値がどれくらいかを簡単に確認できる無料の計算ツールです。",
+ seoText2:"現在のレベルと目標レベルを入力するだけで、必要な経験値をすぐに把握できます。"
+},
+en:{
+ title:"MLB PRO SPIRIT EXP Calculator",
+ currentLv:"Current Level",
+ targetLv:"Target Level",
+ mode:"Release",
+ calc:"Calculate",
+ reset:"Reset",
+ result:"Required EXP",
+ g2:"Grade II Needed",
+ g3:"Grade III Needed",
+ remain:"Remaining EXP",
+ mode2:"Grade II Only",
+ mode3:"Grade III Only",
+ modemix:"Grade II + III",
+ seoTitle:"About the MLB PRO SPIRIT EXP Calculator",
+ seoText1:"This page provides a free calculation tool for MLB PRO SPIRIT that allows you to easily check how much experience points (EXP) are required when using the in-game “Level Up” feature.",
+ seoText2:"Simply enter your current level and target level to instantly see the required EXP."}
+};
 
 let currentLang="ja";
 
@@ -300,11 +311,13 @@ function switchLanguage(lang){
 
 switchLanguage("ja");
 </script>
+<footer>
+  <a href="privacy.html">Privacy Policy</a> |
+  <a href="contact.html">Contact</a>
+</footer>
 
 </body>
 </html>
-
-
 
 
 
